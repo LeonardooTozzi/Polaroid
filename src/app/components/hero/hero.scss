@@ -1,0 +1,234 @@
+.hero {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-top: 6rem;
+  padding-bottom: 2rem;
+  overflow: hidden;
+  background: var(--bg);
+}
+
+/* ---------- Nav ---------- */
+.nav {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.6rem var(--gutter);
+  border-bottom: 1px solid var(--line);
+}
+
+.brand {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.3rem;
+  letter-spacing: -0.02em;
+}
+
+.brand-dot {
+  color: var(--ink-faint);
+}
+
+.nav-links {
+  display: flex;
+  gap: 2rem;
+  font-size: 0.82rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+
+.nav-links a {
+  opacity: 0.6;
+  transition: opacity 0.2s;
+}
+
+.nav-links a:hover {
+  opacity: 1;
+}
+
+.nav-cta {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  border: 1px solid var(--ink);
+  border-radius: 999px;
+  padding: 0.55rem 1.15rem;
+  transition: background 0.25s, color 0.25s;
+}
+
+.nav-cta:hover {
+  background: var(--ink);
+  color: var(--bg);
+}
+
+@media (max-width: 720px) {
+  .nav-links {
+    display: none;
+  }
+}
+
+/* ---------- Conteúdo ---------- */
+.hero-inner {
+  position: relative;
+  z-index: 5;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: var(--ink-soft);
+  margin-bottom: 2rem;
+}
+
+.eyebrow::before {
+  content: "";
+  width: 26px;
+  height: 1px;
+  background: var(--ink);
+}
+
+.hero-title {
+  font-size: clamp(3rem, 9vw, 7.5rem);
+  font-weight: 500;
+  letter-spacing: -0.035em;
+  line-height: 0.95;
+  max-width: 12ch;
+}
+
+.hero-title em {
+  font-style: italic;
+  font-weight: 400;
+}
+
+.hero-foot {
+  margin-top: 3rem;
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 2rem;
+  align-items: end;
+  max-width: 60rem;
+}
+
+.hero-sub {
+  font-size: clamp(1rem, 1.4vw, 1.2rem);
+  color: var(--ink-soft);
+  max-width: 34rem;
+  line-height: 1.7;
+}
+
+.hero-sub em {
+  font-style: italic;
+  color: var(--ink);
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+  border-radius: 999px;
+  padding: 0.9rem 1.6rem;
+  transition: transform 0.2s, background 0.2s, color 0.2s;
+}
+
+.btn-primary {
+  background: var(--ink);
+  color: var(--bg);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+}
+
+.btn-ghost {
+  border: 1px solid var(--line-strong);
+}
+
+.btn-ghost:hover {
+  background: var(--bg-soft);
+}
+
+.btn .arrow {
+  transition: transform 0.2s;
+}
+
+.btn:hover .arrow {
+  transform: translateX(4px);
+}
+
+/* ---------- Faixa de polaroids ---------- */
+.hero-strip {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  gap: clamp(0.8rem, 2.5vw, 2rem);
+  padding: 0 var(--gutter) 1.6rem;
+  pointer-events: none;
+}
+
+.polaroid {
+  background: var(--bg);
+  padding: 0.5rem 0.5rem 1.5rem;
+  border-radius: 3px;
+  box-shadow: var(--shadow);
+  transform: rotate(var(--r, 0deg));
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.polaroid:hover {
+  transform: rotate(0deg) translateY(-6px);
+}
+
+.polaroid img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: 2px;
+  filter: saturate(0.9) contrast(1.02);
+}
+
+.polaroid .cap {
+  position: absolute;
+  bottom: 0.4rem;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 0.5rem;
+  letter-spacing: 0.12em;
+  color: var(--ink-soft);
+}
+
+.p1 { width: clamp(90px, 11vw, 150px); --r: -6deg; }
+.p2 { width: clamp(80px, 9vw, 120px); --r: 4deg; }
+.p3 { width: clamp(100px, 12vw, 160px); --r: 2deg; }
+.p4 { width: clamp(70px, 8vw, 110px); --r: -3deg; }
+.p5 { width: clamp(85px, 10vw, 135px); --r: 5deg; }
+
+@media (max-width: 900px) {
+  .hero-strip {
+    display: none;
+  }
+  .hero-foot {
+    grid-template-columns: 1fr;
+  }
+}

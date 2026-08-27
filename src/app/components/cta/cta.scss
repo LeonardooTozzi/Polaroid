@@ -1,0 +1,114 @@
+.cta {
+  background: var(--bg);
+  border-top: 1px solid var(--line);
+  padding-bottom: 0;
+}
+
+.cta-inner {
+  max-width: 46rem;
+  text-align: center;
+  margin-inline: auto;
+  padding-bottom: clamp(3rem, 7vw, 5rem);
+}
+
+.kicker {
+  color: var(--ink-soft);
+  margin-bottom: 1.2rem;
+}
+
+.cta-title {
+  font-size: clamp(2.4rem, 6vw, 4.5rem);
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+.cta-text {
+  margin: 1.4rem auto 0;
+  max-width: 40rem;
+  color: var(--ink-soft);
+}
+
+.cta-actions {
+  margin-top: 2.4rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+  border-radius: 999px;
+  padding: 0.9rem 1.6rem;
+  transition: transform 0.2s, background 0.2s, color 0.2s;
+}
+
+.btn-primary {
+  background: var(--ink);
+  color: var(--bg);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+}
+
+.btn-ghost {
+  border: 1px solid var(--line-strong);
+}
+
+.btn-ghost:hover {
+  background: var(--bg-soft);
+}
+
+.btn .arrow {
+  transition: transform 0.2s;
+}
+
+.btn:hover .arrow {
+  transform: translateY(-3px);
+}
+
+/* ---------- Footer ---------- */
+.footer {
+  background: var(--bg);
+  border-top: 1px solid var(--line);
+  padding: 2.5rem 0 3rem;
+}
+
+.footer-inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+
+.footer-brand .dot {
+  color: var(--ink-faint);
+}
+
+.footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.4rem;
+}
+
+.footer-links a {
+  color: var(--ink-soft);
+  transition: color 0.2s;
+}
+
+.footer-links a:hover {
+  color: var(--ink);
+}
+
+.footer-note {
+  width: 100%;
+  text-align: center;
+  color: var(--ink-faint);
+  margin-top: 1.5rem;
+}

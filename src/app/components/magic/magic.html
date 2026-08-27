@@ -1,0 +1,181 @@
+@if (phase() === 'idle') {
+  <section class="section magic" id="magia">
+    <div class="wrap">
+      <div class="magic-head" data-reveal>
+        <p class="mono kicker">O quarto escuro</p>
+        <h2 class="display magic-title">Revele suas fotos como uma polaroid</h2>
+        <p class="magic-text">
+          Tire três fotos — pela câmera ou do seu dispositivo — e entre no quarto escuro.
+          Puxe o cordão e veja cada imagem nascer, do escuro à cor, como uma polaroid clássica.
+        </p>
+      </div>
+
+      <div class="idle" data-reveal style="--d:120ms">
+        <div class="idle-actions">
+          <button class="btn btn-primary" (click)="startCamera()">Abrir a câmera</button>
+          <button class="btn btn-ghost" (click)="openFilePicker()">Enviar fotos</button>
+        </div>
+        <p class="idle-hint mono">Você pode tirar 3 fotos pela webcam ou enviar do dispositivo.</p>
+      </div>
+
+      @if (error()) {
+        <p class="error mono">{{ error() }}</p>
+      }
+    </div>
+  </section>
+}
+
+@if (phase() === 'capture') {
+  <section class="section magic" id="magia">
+    <div class="wrap">
+      <div class="magic-head" data-reveal>
+        <p class="mono kicker">O quarto escuro</p>
+        <h2 class="display magic-title">Tire suas três fotos</h2>
+        <p class="magic-text">
+          Capture pela câmera ou envie do dispositivo. Quando tiver três, entre no quarto escuro.
+        </p>
+      </div>
+
+      <div class="capture" data-reveal style="--d:120ms">
+        <div class="cam-box">
+          <video #video autoplay playsinline muted></video>
+          <div class="cam-overlay" [class.ready]="cameraOn()">
+            <span class="mono">{{ cameraOn() ? 'Câmera pronta' : 'Aguardando câmera…' }}</span>
+          </div>
+        </div>
+
+        <div class="capture-controls">
+          <button class="btn btn-primary" (click)="capture()" [disabled]="photoCount() >= 3">Tirar foto</button>
+          <button class="btn btn-ghost" (click)="openFilePicker()">Enviar do dispositivo</button>
+          <button class="btn btn-ghost" (click)="reset()">Recomeçar</button>
+        </div>
+
+        <div class="thumbs">
+          @for (p of photos(); track $index) {
+            <div class="thumb"><img [src]="p" alt="Foto {{ $index + 1 }}"></div>
+          }
+          @for (empty of emptySlots(); track $index) {
+            <div class="thumb empty"></div>
+          }
+        </div>
+
+        <div class="capture-foot">
+          <span class="mono count">{{ indexLabel() }}</span>
+          <button class="btn btn-primary enter" (click)="enterDarkroom()" [disabled]="!canEnterDarkroom()">
+            Entrar no quarto escuro →
+          </button>
+        </div>
+      </div>
+
+      @if (error()) {
+        <p class="error mono">{{ error() }}</p>
+      }
+    </div>
+  </section>
+}
+
+@if (phase() === 'darkroom') {
+  <section class="section magic darkroom-stage" id="magia" aria-label="Quarto escuro">
+    <div class="light-beam" [class.lit]="lit()"></div>
+
+    <div class="darkroom">
+      <div class="lamp-assembly" aria-hidden="true">
+        <div class="glow-layers" [class.lit]="lit()">
+          <span class="glow-ambient"></span>
+          <span class="glow-mid"></span>
+          <span class="glow-core"></span>
+        </div>
+
+        <div class="lamp-rig" [class.lit]="lit()">
+          <div class="bulb" [class.lit]="lit()">
+            <svg viewBox="0 0 80 120" class="bulb-svg" preserveAspectRatio="xMidYMid meet">
+              <defs>
+                <linearGradient id="baseGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#7a7160"/>
+                  <stop offset="50%" stop-color="#b0a48c"/>
+                  <stop offset="100%" stop-color="#5c5446"/>
+                </linearGradient>
+              </defs>
+              <path class="glass" d="M40 6 C22 6 11 20 11 38 C11 52 19 60 24 70 L56 70 C61 60 69 52 69 38 C69 20 58 6 40 6 Z"/>
+              <path class="filament" d="M32 62 C32 52 28 48 28 40 C28 32 32 28 36 36 C40 44 40 44 44 36 C48 28 52 32 52 40 C52 48 48 52 48 62"/>
+              <rect class="base" x="28" y="82" width="24" height="10" rx="2" fill="url(#baseGrad)"/>
+              <rect class="base" x="26" y="92" width="28" height="9" rx="2" fill="url(#baseGrad)"/>
+              <rect class="base" x="28" y="101" width="24" height="8" rx="2" fill="url(#baseGrad)"/>
+            </svg>
+          </div>
+
+          <div class="cord-zone"
+            [class.pulling]="pulling()"
+            role="button"
+            tabindex="0"
+            [attr.aria-disabled]="revealing() || processing()"
+            [attr.aria-label]="revealing() ? 'Revelando fotos' : 'Puxar o cordão para revelar as fotos'"
+            (click)="onCordClick()"
+            (keydown)="onCordKeydown($event)">
+            <span class="cord-line" aria-hidden="true"></span>
+            <span class="knob" aria-hidden="true"></span>
+          </div>
+        </div>
+      </div>
+
+      <p class="darkroom-hint mono" aria-live="polite">
+        @if (processing()) { Revelando... aguarde }
+        @else if (revealing()) { Revelando... }
+        @else { Puxe o cordão para revelar as fotos }
+      </p>
+
+      <div class="darkroom-wall" role="list" aria-label="Fotos a revelar">
+        @for (p of photos(); track $index) {
+          <figure class="darkroom-photo" [style.--rot]="($index - 1) * 2 + 'deg'" role="listitem">
+            <div class="photo-frame">
+              <img [src]="developed()[$index] || p" [alt]="'Foto ' + ($index + 1) + ' escurecida, aguardando revelação'">
+              <span class="red-overlay" aria-hidden="true"></span>
+              <span class="grain" aria-hidden="true"></span>
+            </div>
+            <figcaption class="mono timer">0:00</figcaption>
+          </figure>
+        }
+      </div>
+    </div>
+  </section>
+}
+
+@if (phase() === 'revealed') {
+  <section class="section magic" id="magia">
+    <div class="wrap">
+      <div class="magic-head" data-reveal>
+        <p class="mono kicker">O quarto escuro</p>
+        <h2 class="display magic-title">Suas fotos reveladas</h2>
+        <p class="magic-text">
+          Três instantes, agora físicos. Únicos, seus, impossíveis de apagar.
+        </p>
+      </div>
+
+      <div class="revealed" data-reveal style="--d:120ms">
+        <div class="revealed-grid">
+          @for (p of photos(); track $index) {
+            <figure class="polaroid" [style.--rot]="($index - 1) * 3 + 'deg'">
+              <div class="photo-frame">
+                <img [src]="developed()[$index] || p" [alt]="'Foto ' + ($index + 1)">
+              </div>
+              <figcaption class="mono">Polaroid · {{ $index + 1 }}</figcaption>
+              <a
+                class="btn btn-download"
+                [href]="developed()[$index] || p"
+                [download]="'polaroid-' + ($index + 1) + '.jpg'"
+                (click)="downloadPhoto($index, $event)">
+                Baixar
+              </a>
+            </figure>
+          }
+        </div>
+        <div class="revealed-actions">
+          <button class="btn btn-primary" (click)="reset()">Tirar novas fotos</button>
+        </div>
+      </div>
+    </div>
+  </section>
+}
+
+<canvas #canvas class="capture-canvas" aria-hidden="true"></canvas>
+<input #fileInput type="file" accept="image/*" multiple hidden (change)="onFileSelected($event)">

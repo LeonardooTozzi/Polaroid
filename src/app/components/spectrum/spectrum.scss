@@ -1,0 +1,39 @@
+.spectrum {
+  border-block: 1px solid var(--line);
+  background: var(--bg);
+  overflow: hidden;
+  padding-block: 1.4rem;
+}
+
+.band {
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.track {
+  display: inline-flex;
+  align-items: center;
+  gap: 1.6rem;
+  padding-right: 1.6rem;
+  animation: scroll 30s linear infinite;
+  will-change: transform;
+}
+
+.word {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(1.3rem, 2.6vw, 2rem);
+  color: var(--ink);
+  letter-spacing: -0.02em;
+}
+
+.sep {
+  color: var(--ink-faint);
+  font-size: 1.2rem;
+}
+
+@keyframes scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}

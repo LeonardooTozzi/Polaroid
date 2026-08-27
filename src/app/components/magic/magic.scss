@@ -1,0 +1,648 @@
+.magic {
+  background: var(--bg);
+  border-top: 1px solid var(--line);
+}
+
+.magic-head {
+  max-width: 40rem;
+  margin-bottom: clamp(2.5rem, 6vw, 4rem);
+}
+
+.kicker {
+  color: var(--ink-soft);
+  margin-bottom: 1.2rem;
+}
+
+.magic-title {
+  font-size: clamp(2.2rem, 5vw, 4rem);
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+.magic-text {
+  margin-top: 1.4rem;
+  color: var(--ink-soft);
+  font-size: 1.05rem;
+  max-width: 34rem;
+}
+
+/* ---------- Botões ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+  border-radius: 999px;
+  padding: 0.9rem 1.6rem;
+  cursor: pointer;
+  transition: transform 0.2s, background 0.2s, color 0.2s, opacity 0.2s;
+}
+
+.btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+.btn-primary {
+  background: var(--ink);
+  color: var(--bg);
+  border: 1px solid var(--ink);
+}
+
+.btn-primary:hover:not(:disabled) {
+  transform: translateY(-2px);
+}
+
+.btn-ghost {
+  background: transparent;
+  border: 1px solid var(--line-strong);
+  color: var(--ink);
+}
+
+.btn-ghost:hover:not(:disabled) {
+  background: var(--bg-soft);
+}
+
+/* ---------- Fase idle ---------- */
+.idle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.4rem;
+  padding: clamp(2rem, 5vw, 3.5rem);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--bg-soft);
+}
+
+.idle-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.idle-hint {
+  color: var(--ink-faint);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* ---------- Fase capture ---------- */
+.capture {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.6rem;
+}
+
+.cam-box {
+  position: relative;
+  width: 100%;
+  max-width: 560px;
+  aspect-ratio: 4 / 3;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  background: #111;
+  border: 1px solid var(--line);
+}
+
+.cam-box video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.cam-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(10, 10, 10, 0.55);
+  color: #fff;
+  transition: opacity 0.4s;
+}
+
+.cam-overlay.ready {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.capture-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.thumbs {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.thumb {
+  width: 72px;
+  height: 88px;
+  border-radius: 3px;
+  overflow: hidden;
+  background: var(--bg);
+  box-shadow: var(--shadow);
+  border: 1px solid var(--line);
+}
+
+.thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.thumb.empty {
+  border: 1px dashed var(--line-strong);
+  background: transparent;
+}
+
+.capture-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 560px;
+  flex-wrap: wrap;
+}
+
+.count {
+  color: var(--ink-faint);
+}
+
+/* ---------- Fase quarto escuro (overlay fixo) ---------- */
+.darkroom-stage {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1.5rem;
+  background: #050505;
+  color: #f5f4f1;
+  overflow: hidden;
+}
+
+.darkroom {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(1.8rem, 4vw, 2.6rem);
+  width: 100%;
+  max-width: 980px;
+}
+
+.lamp-assembly {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.glow-layers {
+  position: absolute;
+  top: 12%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(52vw, 240px);
+  height: min(38vw, 180px);
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0;
+  transition: opacity .5s;
+}
+
+.glow-layers.lit { opacity: 1; }
+
+.glow-core,
+.glow-mid,
+.glow-ambient {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  animation: pulse-glow 2s ease-in-out infinite alternate;
+}
+
+.glow-core {
+  background: radial-gradient(ellipse at 50% 40%, rgba(255,60,60,.95), rgba(255,30,30,.5) 35%, transparent 65%);
+  filter: blur(3px);
+  opacity: .9;
+}
+
+.glow-mid {
+  background: radial-gradient(ellipse at 50% 40%, rgba(255,40,40,.6), rgba(180,15,15,.25) 40%, transparent 72%);
+  filter: blur(14px);
+  opacity: .75;
+  animation-delay: .4s;
+}
+
+.glow-ambient {
+  background: radial-gradient(ellipse at 50% 40%, rgba(200,20,20,.35), rgba(120,10,10,.12) 42%, transparent 80%);
+  filter: blur(28px);
+  opacity: .55;
+  animation-delay: .8s;
+}
+
+@keyframes pulse-glow {
+  from { opacity: .5; }
+  to { opacity: 1; }
+}
+
+.light-beam {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 80% 100% at 50% 0, rgba(255,40,40,.32), rgba(180,15,15,.1) 38%, transparent 68%);
+  pointer-events: none;
+  opacity: 0;
+  z-index: 0;
+  transition: opacity .7s;
+}
+
+.light-beam.lit { opacity: 1; }
+
+.lamp-rig {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform-origin: 50% 0;
+  will-change: transform;
+  filter: drop-shadow(0 12px 24px rgba(0,0,0,.55));
+}
+
+.bulb {
+  position: relative;
+  width: clamp(72px, 9vw, 112px);
+  height: clamp(110px, 14vw, 170px);
+  transform-origin: 50% 8%;
+  will-change: transform;
+}
+
+.bulb-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  overflow: visible;
+}
+
+.bulb .glass {
+  fill: rgba(255, 250, 235, 0.06);
+  stroke: rgba(245, 244, 241, 0.55);
+  stroke-width: 1.4;
+  transition: fill 0.5s ease, stroke 0.5s ease, filter 0.5s ease;
+}
+
+.bulb .filament {
+  fill: none;
+  stroke: rgba(245, 244, 241, 0.35);
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  transition: stroke 0.4s ease, filter 0.4s ease;
+}
+
+.bulb .base {
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,.6));
+}
+
+.bulb.lit .glass {
+  fill: rgba(255,60,60,.32);
+  stroke: rgba(255,130,130,.95);
+  filter: drop-shadow(0 0 28px rgba(255,50,50,.85));
+}
+
+.bulb.lit .filament {
+  stroke: #ff8a8a;
+  filter: drop-shadow(0 0 12px rgba(255,60,60,1));
+}
+
+.cord-zone {
+  position: relative;
+  z-index: 1;
+  width: 48px;
+  height: calc(clamp(54px, 7vw, 84px) + 90px);
+  margin-top: -2px;
+  padding: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.cord-zone[aria-disabled="true"] {
+  cursor: wait;
+  pointer-events: none;
+}
+
+.cord-zone:focus-visible {
+  outline: 2px solid rgba(245, 244, 241, 0.4);
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+
+.cord-line {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  display: block;
+  width: 3px;
+  height: clamp(54px, 7vw, 84px);
+  border-radius: 999px;
+  background: linear-gradient(180deg, #e8e6e1, #c8c4bb);
+  box-shadow: inset 0 0 2px rgba(0,0,0,.25);
+  transform: translateX(-50%);
+  transform-origin: top center;
+  will-change: transform;
+  pointer-events: none;
+}
+
+.cord-zone.pulling .cord-line {
+  animation: cord-line-stretch 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.knob {
+  position: absolute;
+  top: calc(clamp(54px, 7vw, 84px) - 11px);
+  left: 50%;
+  display: block;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #f5f4f1, #b0a48c 60%, #7a7160);
+  box-shadow: 0 1px 3px rgba(0,0,0,.45);
+  transform: translateX(-50%);
+  will-change: transform;
+  pointer-events: none;
+}
+
+.cord-zone.pulling .knob {
+  animation: cord-knob-pull 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes cord-knob-pull {
+  0% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(calc(clamp(54px, 7vw, 84px) * 0.65)); }
+  100% { transform: translateX(-50%) translateY(0); }
+}
+
+@keyframes cord-line-stretch {
+  0% { transform: translateX(-50%) scaleY(1); }
+  50% { transform: translateX(-50%) scaleY(1.65); }
+  100% { transform: translateX(-50%) scaleY(1); }
+}
+
+.darkroom-hint {
+  color: rgba(245, 244, 241, 0.55);
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  text-align: center;
+  max-width: 80vw;
+}
+
+.darkroom-wall {
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(1.2rem, 3.5vw, 2.4rem);
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.darkroom-photo {
+  position: relative;
+  flex-shrink: 0;
+  background: #f5f4f1;
+  padding: 0.65rem 0.65rem 2.4rem;
+  border-radius: 3px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55);
+  transform: rotate(var(--rot, 0deg)) scale(0.98);
+  opacity: 0.22;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.6s ease;
+}
+
+.darkroom-photo img {
+  width: clamp(130px, 20vw, 210px);
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: 2px;
+  display: block;
+  filter: grayscale(1) brightness(0.16) contrast(1.3) sepia(.35) blur(.6px);
+  transition: filter 1.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.darkroom-photo.revealed img {
+  filter: grayscale(0) brightness(1.05) contrast(1.06) saturate(1.12);
+}
+
+.red-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(220,0,0,.55), rgba(140,0,0,.45));
+  mix-blend-mode: multiply;
+  opacity: .55;
+  pointer-events: none;
+  transition: opacity 1.4s;
+}
+
+.darkroom-photo.revealed .red-overlay {
+  opacity: 0;
+}
+
+.darkroom-photo .photo-frame::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 2px;
+  box-shadow: inset 0 0 30px rgba(80, 30, 20, .55);
+  pointer-events: none;
+  transition: box-shadow 1.4s;
+}
+
+.darkroom-photo.revealed .photo-frame::after {
+  box-shadow: inset 0 0 6px rgba(80, 30, 20, .12);
+}
+
+.darkroom-photo.revealed {
+  opacity: 1;
+  transform: rotate(var(--rot, 0deg)) scale(1);
+}
+
+.photo-frame {
+  position: relative;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.grain {
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.09'/%3E%3C/svg%3E");
+  opacity: 0.08;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}
+
+.darkroom-photo figcaption {
+  position: absolute;
+  bottom: 0.55rem;
+  left: 0;
+  right: 0;
+  text-align: center;
+  color: #6a655d;
+  font-size: 0.55rem;
+  letter-spacing: 0.14em;
+}
+
+/* ---------- Fase revelada ---------- */
+.revealed {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}
+
+.revealed-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(1rem, 3vw, 2rem);
+  justify-content: center;
+}
+
+.polaroid {
+  position: relative;
+  flex-shrink: 0;
+  background: var(--bg);
+  padding: 0.6rem 0.6rem 2.2rem;
+  border-radius: 3px;
+  box-shadow: var(--shadow-lg);
+  transform: rotate(var(--rot, 0deg));
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.polaroid:hover {
+  transform: rotate(0deg) translateY(-6px);
+}
+
+.polaroid .photo-frame {
+  position: relative;
+  overflow: hidden;
+  border-radius: 2px;
+}
+
+.polaroid img {
+  width: clamp(140px, 22vw, 240px);
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: 2px;
+  display: block;
+  filter: saturate(0.92) contrast(1.06) brightness(1.02);
+}
+
+.polaroid .grain {
+  opacity: 0.12;
+}
+
+.polaroid figcaption {
+  position: absolute;
+  bottom: 0.5rem;
+  left: 0;
+  right: 0;
+  text-align: center;
+  color: var(--ink-soft);
+  font-size: 0.6rem;
+  letter-spacing: 0.12em;
+}
+
+.btn-download {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 0.5rem;
+  padding: 0.45rem 1rem;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 0.8rem;
+  text-decoration: none;
+  background: var(--bg);
+  color: var(--ink);
+  border: 1px solid var(--line-strong);
+  transition: transform 0.2s, background 0.2s, color 0.2s;
+}
+
+.btn-download:hover {
+  transform: translateY(-2px);
+  background: var(--bg-soft);
+}
+
+.revealed-actions {
+  display: flex;
+  justify-content: center;
+}
+
+/* ---------- Erro ---------- */
+.error {
+  margin-top: 1.5rem;
+  text-align: center;
+  color: var(--red);
+  font-size: 0.8rem;
+}
+
+/* ---------- Elementos ocultos ---------- */
+.capture-canvas {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+@media (max-width: 640px) {
+  .darkroom-stage {
+    padding: 2rem 1rem;
+  }
+
+  .darkroom-wall {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .darkroom-photo,
+  .darkroom-photo.revealed {
+    transform: rotate(0deg) scale(1) !important;
+  }
+
+  .darkroom-photo img {
+    width: min(70vw, 240px);
+  }
+
+  .capture-foot {
+    justify-content: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .darkroom-photo,
+  .darkroom-photo img,
+  .bulb .glass,
+  .bulb .filament {
+    transition: none !important;
+  }
+}
