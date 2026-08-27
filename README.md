@@ -1,59 +1,102 @@
 # Polaroid
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.1.5.
+A cinematic, single-page landing experience about instant photography — built with **Angular 22** (standalone components, SSR) and **anime.js**. The site tells the story of the Polaroid camera in Portuguese (pt-BR), from the magic of the instant print to the culture and cameras that made it iconic.
 
-## Development server
+## ✨ Features
 
-To start a local development server, run:
+- **Immersive storytelling** — a scroll-driven narrative across eight sections: Hero, Spectrum, Magic, History, Gallery, Culture, Cameras, and CTA.
+- **Server-side rendering (SSR)** — fast first paint and SEO-friendly output via `@angular/ssr`.
+- **Standalone components** — modern Angular architecture with no `NgModule` boilerplate.
+- **Scroll-reveal animations** — powered by [anime.js](https://animejs.com/) through a reusable `reveal` directive.
+- **Responsive, art-directed layout** — custom SCSS with a distinctive editorial design system.
 
-```bash
-ng serve
-```
+## 🧱 Tech Stack
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+| Layer      | Technology                          |
+| ---------- | ----------------------------------- |
+| Framework  | Angular 22 (standalone)             |
+| Rendering  | Angular SSR (`@angular/ssr`)        |
+| Animations | anime.js 4                          |
+| Server     | Express 5                           |
+| Language   | TypeScript 6                        |
+| Styling    | SCSS                                |
+| Tooling    | Angular CLI, Prettier               |
 
-## Code scaffolding
+## 🚀 Getting Started
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+### Prerequisites
 
-```bash
-ng generate component component-name
-```
+- **Node.js** 20+ (the project pins `npm@11.17.0` via `packageManager`)
+- npm
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+### Install
 
 ```bash
-ng test
+npm install
 ```
 
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
+### Development server
 
 ```bash
-ng e2e
+npm start
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+Open [http://localhost:4200](http://localhost:4200). The app hot-reloads on source changes.
 
-## Additional Resources
+### Production build
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+```bash
+npm run build
+```
+
+Build artifacts are emitted to `dist/`.
+
+### Serve the SSR build locally
+
+```bash
+npm run serve:ssr:polaroid
+```
+
+### Tests
+
+```bash
+npm test
+```
+
+## 📁 Project Structure
+
+```
+src/
+├── app/
+│   ├── components/          # Feature sections (hero, spectrum, magic, ...)
+│   │   ├── hero/
+│   │   ├── spectrum/
+│   │   ├── magic/
+│   │   ├── history/
+│   │   ├── gallery/
+│   │   ├── culture/
+│   │   ├── cameras/
+│   │   └── cta/
+│   ├── directives/
+│   │   └── reveal.directive.ts   # Scroll-reveal animation directive
+│   ├── app.ts               # Root component
+│   ├── app.config.ts        # App providers
+│   └── app.routes.ts        # Route definitions
+├── main.ts                  # Browser bootstrap
+├── main.server.ts           # SSR bootstrap
+└── server.ts                # Express server
+```
+
+## 🛠️ Scripts
+
+| Command                  | Description                          |
+| ------------------------ | ------------------------------------ |
+| `npm start`              | Run the dev server                   |
+| `npm run build`          | Production build                     |
+| `npm run watch`          | Build in watch mode (development)    |
+| `npm test`               | Run unit tests                       |
+| `npm run serve:ssr:polaroid` | Serve the SSR production build   |
+
+## 📄 License
+
+This project is for demonstration purposes. All photography shown is sourced from [Unsplash](https://unsplash.com) and remains the property of its respective authors.
